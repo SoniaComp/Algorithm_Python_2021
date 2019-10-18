@@ -14,6 +14,33 @@ int main() {
   int m = 0;
   
   while (n--) {
-    
+    int x;
+    cin >> x;
+    if(x>m){
+      while(x>m) {
+        s.push(++m); // 0을 넣고, 그 다음 1 대기
+        ans += '+'; // 넣음 표시, 한꺼번에 출력해야 하니까 문자열로
+      }
+      s.pop();
+      ans += '-';
+    } else {
+      bool found = false;
+      if(!s.empty()){
+        int top = s.top();
+        s.pop();
+        ans += '-';
+        if(x==top){
+          found = true;
+        }
+      }
+      if(!found){
+        cout << "NO" << '\n';
+        return 0;
+      }
+    }
   }
+  for (auto x: ans){
+    cout << x << '\n';
+  }
+  return 0;
 }
