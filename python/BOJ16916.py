@@ -1,15 +1,15 @@
 import sys
 
-
+@profile
 def compare_txt(stack, subtxt):
     flag = True
-    for i in range(-1, (-len(subtxt))-1, -1):
+    for i in range(-1, (-len(subtxt))-1, -1): # 가장 오래 걸려땅.. 41.2
         if stack[i] != subtxt[i]:
             flag = False
             break
     return flag
 
-
+@profile
 def solution(txt, subtxt):
     stack = []
     for i in range(len(txt)):

@@ -16,3 +16,45 @@ kmp 알고리즘:https://m.blog.naver.com/PostView.nhn?blogId=ndb796&logNo=22124
 
 c++은 빠르당: strstr(대상문자열, 검색할문자열): 문자열을 찾았으면 문자열로 시작하는 문자열의 포인터를 반환, 문자열이 없으면 NULL반환.
 '''
+
+import sys
+
+def make_table(pattern):
+    pattern_size = len(pattern)
+    table = [0 for i in range(pattern_size)]
+    j = 0
+    for i in range(1, pattern_size):
+        while j > 0 and pattern[i] != pattern[j]:
+            j = table[j-1]
+        if pattern[i] == pattern[j]:
+            j += 1
+            table[i] = j
+    return table
+
+def solution(txt, subtxt):
+    table = make_table(subtxt)
+
+    txt_size = len(txt)
+    subtxt_size = len(subtxt)
+    j = 0
+    
+    for i in range(txt_size):
+      while j>0 and txt[i] != subtxt[j]:
+        j = table[j-1]
+      if txt[i] == subtxt[j]:
+        if j == subtxt_size-1:
+          return 1
+        else: 
+          j+=1
+          
+    return 0
+
+def main():
+    stdin = sys.stdin
+    txt = stdin.readline().strip()
+    subtxt = stdin.readline().strip()
+    print(solution(txt, subtxt))
+
+
+if __name__ == '__main__':
+    main()
