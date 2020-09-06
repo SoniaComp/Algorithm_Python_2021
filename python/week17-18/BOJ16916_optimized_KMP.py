@@ -24,7 +24,7 @@ def make_table(pattern):
     table = [0 for i in range(pattern_size)]
     j = 0
     for i in range(1, pattern_size):
-        while j > 0 and pattern[i] != pattern[j]:
+        while j > 0 and pattern[i] != pattern[j]: # 여기서 왜 while을 쓰는 걸까? # KMP 알고리즘
             j = table[j-1]
         if pattern[i] == pattern[j]:
             j += 1
