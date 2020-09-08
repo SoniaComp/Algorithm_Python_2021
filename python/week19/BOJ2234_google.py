@@ -31,7 +31,7 @@ def solution_3(visited, space, n, m):
     ans = 0
     for r in range(m):
         for c in range(n):
-            for i in (2, 3):
+            for i in (2, 4): #옆에 있는 벽, 아래 있는 벽만 체크해도 오케이
                 ny, nx = r+dy[i], c+dx[i]
                 if 0 <= ny < m and 0 <= nx < n and visited[r][c] - visited[ny][nx]:
                     temp = space[visited[r][c]] + space[visited[ny][nx]]
