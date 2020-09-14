@@ -50,3 +50,18 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# combinations는 메모리를 차지 하지 않는다.
+# 이런식으로 동작한다.
+# 빌트인 함수라 효율적으로 구동.
+'''
+
+def ii(n):
+    for i in range(n):
+        yield i
+
+
+for i in ii(5):
+    print(i)
+
+'''
