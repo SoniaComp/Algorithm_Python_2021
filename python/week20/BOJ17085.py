@@ -4,10 +4,10 @@ dr = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
 
 def solution(N, M, grid):
-    ans = 0
+    ans = 1
     visited = [[0]*M for _ in range(N)]
-    for i in range(N):
-        for j in range(M):
+    for i in range(1, N-1):
+        for j in range(1, M-1):
             if grid[i][j] == '#':
                 end_flag = False
                 count = 0
@@ -28,15 +28,18 @@ def solution(N, M, grid):
                         break
                     else:
                         count += 1
+                        if count == i or count == j:
+                            break
                 if count:
                     ans *= 1+4*count
     return ans
+
 
 def main():
     stdin = sys.stdin
     N, M = map(int, stdin.readline().split())
     grid = [list(str(stdin.readline().strip())) for _ in range(N)]
-    solution(N, M, grid)
+    print(solution(N, M, grid))
 
 
 if __name__ == "__main__":
