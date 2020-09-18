@@ -2,36 +2,36 @@ import sys
 
 dr = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
+# 기능 하나 분리
+
+
+def range_check(y, x, r, N, M):
+    for i in range(-1, 2, 2):
+        ty = y + r*i
+        tx = x + r*i
+        if ty < 0 or ty >= N or tx < 0 or tx >= M:
+            return False
+    return True
+
 
 def solution(N, M, grid):
     ans = 1
     visited = [[0]*M for _ in range(N)]
-    for i in range(1, N-1):
-        for j in range(1, M-1):
-            if grid[i][j] == '#':
-                end_flag = False
-                count = 0
-                while 1:
-                    for x, y in dr:
-                        x *= count+1
-                        y *= count+1
-                        if grid[i+x][j+y] == '#' and visited[i+x][j+y] == 0:
-                            end_flag = True
-                            break
-                    if end_flag:
-                        if count:
-                            for cnt in range(count+1):
-                                for x, y in dr:
-                                    x *= cnt+1
-                                    y *= cnt+1
-                                    visited[i+x][j+y] = 1
-                        break
+    for i in range(1, N):
+        for j in range(1, M):
+            if grid[i][j] == '.':
+                continue
+            k = 0
+            while 1:
+                if range_check(i, j, k, N, M):
+                    if grid[i+k][j] == '#' and grid[i-k][j] == '#' and grid[i][j+k] == '#' and grid[i][j-k] == '#':
+                        ans *= (1+4*k)
+
+                        for c in range(k):
+                            grid[i+c][j], grid[i][j+c], grid[i-c][j], grid[i][j-c] = '#'
                     else:
-                        count += 1
-                        if count == i or count == j:
-                            break
-                if count:
-                    ans *= 1+4*count
+                        break
+                else: break
     return ans
 
 
