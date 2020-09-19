@@ -3,7 +3,7 @@ import sys
 dr = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
 # 기능 하나 분리
-
+# 브루트포스
 
 def range_check(y, x, r, N, M):
     for i in range(-1, 2, 2):
