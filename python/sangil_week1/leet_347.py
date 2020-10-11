@@ -4,7 +4,6 @@ NlogN 으로 풀어야 한다!!
 
 복잡도: 빅오 표기법(최악의 경우)
 '''
-
 # 첫번째 그냥 풀이
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
@@ -21,8 +20,8 @@ class Solution:
                 num = n
             if n == nums[len(num) - 1]:
                 frequent[num] = count
-        frequent_num = sorted(frequent)  # 오답
-        # frequent_num = [v for i, v in sorted(frequent.items(), key=lambda item: item[1])]
+        # frequent_num = sorted(frequent)  # 오답
+        frequent_num = [v for i, v in sorted(frequent.items(), key=lambda item: item[1], reverse=True)]
         return frequent_num[:k]
 
 

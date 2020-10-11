@@ -1,6 +1,25 @@
 class Solution:
     def findItinerary(self, tickets: List[List[str]]) -> List[str]:
-        linked = {}
+        linked = collections.defaultdict(list)
+        # for ticket in tickets:
+        #     linked[ticket[0]] = ticket[1]
+        # 여러개가 있을 경우, 사전 순으로...
+        for ticket in tickets:
+            try:
+                if linked[ticket[0]] and linked[ticket[1]] > ticket[1]:
+                    linked[ticket[0]] = ticket[1]
+            except:
+                linked[ticket[0]] = ticket[1]
+        result = ['JFK']
+        current = 'JFK'
+        for i in range(len(tickets)):
+            result.append(linked[current])
+            current = linked[current]
+        return result
+'''        
+class Solution:
+    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        linked = collections.defaultdict(list)
         # for ticket in tickets:
         #     linked[ticket[0]] = ticket[1]
         # 여러개가 있을 경우, 사전 순으로...
@@ -16,7 +35,7 @@ class Solution:
             result.append(linked [current])
             current = linked[current]
         return result
-        
+'''
 ## 상길북
 ############################
 # 풀이1. DFS로 일정 그래프 구성
