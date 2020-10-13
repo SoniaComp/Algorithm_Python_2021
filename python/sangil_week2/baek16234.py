@@ -10,28 +10,44 @@
 # 시간복잡도: 2초 - 50*100*2,000*2 = 0.2 초
 # 왔다갔다 해도 충분!!
 
-# BFS 대신 DFS를 선택한 이유
-# BFS 는 leaf node에서 마무리하지만,
-# DFS 는 백트래킹 하면서 root로 돌아와서
-# 다음 연합 나라를 찾기 쉽지 않을까 생각했다.
-
 import sys
 
+dr = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
-def dfs(A, current_node, union, union_num):
-    # code
-
-def re_dfs(A, current_node, union, union_num):
-    # code
+def bfs(current, A, union, union_num):
+    cx, cy = current
+    queue = [(cx, cy)]
+    count = 0
+    total_num = 0
+    while queue:
+      x, y = queue.pop()
+      union[x][y] = union_num
+      count += 1
+      total_num += A[x][y]
+      for dx, dy in dr:
+        if union[x+dx][y+dy] == -1:
+          queue.append((x+dx, y+dy))
+    new_num = total_num // count
+    return A, union, new_num
 
 def solution(N, L, R, A):
     ans = 0
     while 1:
         union = [[-1]*N for _ in range(N)]  # 연합
-        union_num = 1  # 연합 그룹 number
-        union[0][0] = union_num
-        # dfs
-        
+        union_num = 0  # 연합 그룹 number
+        new_nums = []
+        for x in range(N):
+          for y in range(N):
+            if union[x][y] == -1 :
+              A, union, new_num = bfs((x, y), A, union, union_num)
+              new_nums.apped(new_num)
+              union_num += 1
+        if union_num == 0: # 인구 이동 없었음
+          break
+        for x in range(N):
+          for y in range(N):
+            A[x][y] = new_nums[union[x][y]]
+        ans += 1
     return ans
 
 
