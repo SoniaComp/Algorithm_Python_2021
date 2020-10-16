@@ -4,14 +4,17 @@
 
 # checkpoint
 # 큰 상자에 포함될 수록 절약된다.
+
+import pytest
+
 import sys
 
 '''
-# →⌟↑ 
+# →⌟↑
 dr = [(0, 1), (1, 0), (0, -1)]
 def scan_sq(current, space, visited):
     cx, cy = current
-    # SCAN →⌟↑ 
+    # SCAN →⌟↑
     #####
     # 스택에 방문한 데 넣어놓고, 방문하면서 visited 보다 크면 넣기
     #####
@@ -21,53 +24,122 @@ def stick_sq(current, space, visited):
 '''
 
 # 그냥 아예 처음부터 큰 거 붙이기
+import copy
 
 
 def stick_sq(current, size, space, sticked):
     cx, cy = current
+    # c_sticked = copy.deepcopy(sticked)  # 주소값 가져와서 바로 변경?
     square = True
     visited = []
-    for i in range(size): # 아래 세줄을 파이썬 하게 바꾼다면?
+    for i in range(size):  # 아래 세줄을 파이썬 하게 바꾼다면?
         for j in range(size):
             x, y = (cx+i, cy+j)
-            if sticked[x][y] == 0 and space[x][y] == 0:
+            if sticked[x][y] == 0 and space[x][y] == 1:
+                visited.append((x, y))
+                continue
+            else:
                 square = False
                 break
-            visited.append((x, y))
-    if sqaure = False:
-        return space, sticked, 0 # 계속해서 공간값을 넘겨주는게 좋은 걸까?
-    else:
-        while visited:
-            x, y = visited.pop()
-            sticked[x][y] == 1
-    return space, sticked, 1
+    if square == False:
+        return 0, []  # 계속해서 공간값을 넘겨주는게 좋은 걸까?
+    return 1, visited
 
 
-def solution(square):
-    size = len(square)
-    space = square # 궁금증.. 값 변경해주기 위해서 이렇게!?!? iterator!?
+def solution(square):  # size는 색종이 크기, num은 갯
+    size = 5
+    num = 5
     ans = 0
-    sticked = [[0]*size for _ in range(size)]
+    sticked = [[0]*len(square) for _ in range(len(square))]
 
     # for s in reversed(range(size + 1)) # 이것보다 직관적인 것 같아서..
-    for s in range(size, 0, -1):  # 언어에 대한 궁금증.. 왜 마지막 값은 포함 안 될까?
+    for s in range(5, 0, -1):  # 언어에 대한 궁금증.. 왜 마지막 값은 포함 안 될까?
         # 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
         # 0, 0~1, 0~2, 0~3, 0~4
-        for x in range(s+1):
-            for y in range(s+1):
-                space, visited, ans_add = stick_sq((x, y), size, square, visited)
-                ans += ans_add
+        count = 5
+        for x in range(10-s+1):  # 10-s+1
+            for y in range(10-s+1):
+                if square[x][y] == 0:
+                    continue
+                if count == 0:
+                    if s != 1:
+                        break
+                    elif square[x][y] == 1 and sticked[x][y] == 0:
+                        return -1
+                success, visited = stick_sq((x, y), s, square, sticked)
+                if success:
+                    ans += 1
+                    while visited:
+                        x, y = visited.pop()
+                        sticked[x][y] = 1
+                        count -= 1
     return ans
 
 
 def main():
     stdin = sys.stdin
-    square = [map(int, stdin.readline().split()) for _ in range(10)]
-    solution(square)
+    # 'map' object is not subscriptable
+    square = [list(map(int, stdin.readline().split())) for _ in range(10)]
+    print(solution(square))
 
 
 if __name__ == "__main__":
     main()
+
+# stdin params 입력..
+
+
+@pytest.mark.parametrize(
+    "square",
+    [
+        # [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        #  ],
+        [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+        # [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        #  [0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+        #  [0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
+        #  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+        #  [0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+        #  [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        #  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+        # [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        #  ]
+    ]
+)
+def test_solution(square):
+    assert solution(square) == 4
+    # assert solution(square) == -1
+
 
 '''testcase
 0 0 0 0 0 0 0 0 0 0
