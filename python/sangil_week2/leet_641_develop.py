@@ -13,6 +13,7 @@ class MyCircularDeque:
         self.head = Node('head')
         self.max_count = k
         self.size = 0
+        self.last = self.head
 
     def insertFront(self, value: int) -> bool:
         if self.isFull():
@@ -21,19 +22,15 @@ class MyCircularDeque:
         self.head.next = Node(value)
         self.head.next.next = cur_front
         self.size += 1
+        if self.head == self.last:
+            self.last = self.head.next
         return True
-
-    def findNode(self, value: int, order) -> Node:
-        cur = self.head
-        for _ in range(order):
-            cur = cur.next
-        return cur
 
     def insertLast(self, value: int) -> bool:
         if self.isFull():
             return False
-        cur = findNode(value, self.size)
-        cur.next = Node(value)
+        self.last.next = Node(value)
+        self.last = self.last.next
         self.size += 1
         return True
 
@@ -45,6 +42,12 @@ class MyCircularDeque:
         self.size -= 1
         return True
 
+    def findNode(self, value: int, order) -> Node:
+        cur = self.head
+        for _ in range(order):
+            cur = cur.next
+        return cur
+        
     def deleteLast(self) -> bool:
         if self.isEmpty():
             return False
