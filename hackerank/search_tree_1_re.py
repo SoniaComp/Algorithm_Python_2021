@@ -44,3 +44,16 @@ def swapNodes(indexes, queries):
         q += filter(None, (node.left, node.right))
       h += 1 # Height
     yield inorder(root)
+
+# indexes = [[2,3], [-1, 4], [-1, 5], [-1, -1], [-1, -1]]
+
+# f = lambda x: None if x == -1 else Node(x)
+# children = [list(map(f, x)) for x in indexes]
+# print(children)
+# print(sum(children, []))
+# # sum(이중리스트, []) 이런식으로 합칠 수 있다.
+# nodes = {n.data: n for n in filter(None, sum(children, []))}
+# nodes[1] = Node(1)
+# for idx, child_pair in enumerate(children):
+#     nodes[idx+1].left = child_pair[0]
+#     nodes[idx+1].right = child_pair[1]
