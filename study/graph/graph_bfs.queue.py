@@ -1,3 +1,4 @@
+graph = []
 def iterative_dfs(start_v):
   discovered = [start_v]
   queue = [start_v]

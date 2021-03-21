@@ -1,3 +1,4 @@
+graph = []
 def iterative_dfs(start_v):
   discovored = []
   stack = [start_v]
