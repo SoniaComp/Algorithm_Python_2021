@@ -1,37 +1,20 @@
-def merge_sort(list):
-    if len(list) <= 1:
-        return list
-    
-    # 분할
-    mid = len(list)//2
-    leftList = list[:mid]
-    rightList = list[mid:]
-    leftList = merge_sort(leftList)
-    rightList = merge_sort(rightList)
-    
-    # 정복
-    return merge(leftList, rightList)
-    
-    # 1 4 6 5 <- [1, 4, 5, 6]
-    # 1 4 / 6 5 <- [1, 4] / [ 5, 6]
-    # 1 / 4 / 6 / 5
-    
-def merge(left, right):
-    result = []
-    
-    while len(left) > 0 or len(right) > 0:
-        if len(left) > 0 and len(right) > 0:
-            if left[0] <= right[0]:
-                result.append(left[0])
-                left = left[1:]
-            else:
-                result.append(right[0])
-                right = right[1:]
-        elif len(left) > 0:
-            result.extend(left)
-            left = []
-        elif len(right) > 0:
-            result.extend(right)
-            right = []
-            
-    return result
+def merge_sort(arr):
+    if len(arr) < 2:
+        return arr
+
+    mid = len(arr) // 2
+    low_arr = merge_sort(arr[:mid])
+    high_arr = merge_sort(arr[mid:])
+
+    merged_arr = []
+    l = h = 0
+    while l < len(low_arr) and h < len(high_arr):
+        if low_arr[l] < high_arr[h]:
+            merged_arr.append(low_arr[l])
+            l += 1
+        else:
+            merged_arr.append(high_arr[h])
+            h += 1
+    merged_arr += low_arr[l:]
+    merged_arr += high_arr[h:]
+    return merged_arr
